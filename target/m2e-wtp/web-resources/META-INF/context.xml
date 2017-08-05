@@ -20,7 +20,7 @@
         maxActive="100" maxIdle="30" maxWait="10000" 
         url="jdbc:mysql://localhost:3306/minishop"
         driverClassName="com.mysql.jdbc.Driver"
-        username="minishop" password="minishop"
+        username="root" password="root"
     />
     <!-- Default set of monitored resources. If one of these changes, the    -->
     <!-- web application will be reloaded.                                   -->

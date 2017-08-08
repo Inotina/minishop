@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class DaoDbConfigReader {
 	private Properties dbProps;
-	private final String dbConfigPath = "/dbconf/db.properties";
+	private final String dbConfigPath = "dbconf/db.properties";
 	
 	protected Properties getDbProps() throws FileNotFoundException, IOException {
 		if (dbProps != null) return dbProps;

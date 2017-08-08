@@ -10,15 +10,17 @@
 <body>
 	<div class="dlogin">
 		<div class="login">
-			<form method="post" action="login" id="loginform">
+			<form method="post" name="lform" action="login" id="loginform" onsubmit="return checkLogin()">
 				<c:if test="${not empty invalidLogin }">
 					<div style="color: red; padding-top: 10px;">${invalidLogin }</div>
 				</c:if>
+				
 				<c:if test="${empty invalidLogin }">
 					<div style="color: red; padding-top: 28px;"></div>
 				</c:if>
+				<label id="labelLogin" style="color:red;" hidden></label>
 				<div style="padding-top: 5px;">
-					Login: &emsp; <input type="text" name="login" value="${login }" />
+					Login: &emsp; <input id="log" type="text" name="login" value="${login }" />
 				</div>
 				<c:if test="${not empty invalidPassword }">
 					<div style="color: red; padding-top: 10px;">${invalidPassword }</div>
@@ -26,13 +28,15 @@
 				<c:if test="${empty invalidPassword }">
 					<div style="color: red; padding-top: 28px;"></div>
 				</c:if>
+				<label id="labelPassword" style="color:red;" hidden></label>
 				<div style="padding-top: 5px;">
-					Password: <input type="password" name="password" />
+					Password: <input id="pass" type="password" name="password" />
 				</div>
 			</form>
 			<button type="submit" style="margin-top: 15px;" form="loginform"
 				value="Submit">Login</button>
 		</div>
 	</div>
+	<script type="text/javascript" src="./js/login.js"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@ function checkLogin() {
 		labelLogin.innerHTML = "";
 	}
 	if (password.length < 8) {
-		labelPassword.innerHTML = "Password less than 8 characters";
+		labelPassword.innerHTML = "Password is less than 8 characters";
 		labelPassword.removeAttribute("hidden");
 		loginOk = false;
 	} else if (password.indexOf(" ") >= 0) {
@@ -45,7 +45,7 @@ regLogin.onchange = function() {
 		jsLoginMsg.innerHTML = "Login should contain more than 3 characters.";
 		jsLoginMsg.style.color = "red";
 	} else if (loginValue.indexOf(" ") >= 0) {
-		jsLoginMsg.innerHTML = "Spaces not allowed.";
+		jsLoginMsg.innerHTML = "Spaces are not allowed.";
 		jsLoginMsg.style.color = "red";
 	} else {
 		jsLoginMsg.innerHTML = "Login is ok!";
@@ -62,7 +62,7 @@ regEmail.onchange = function() {
 		jsEmailMsg.innerHTML = "Email should contain more than 4 characters.";
 		jsEmailMsg.style.color = "red";
 	} else if (emailValue.indexOf(" ") >= 0 || emailValue.indexOf("@") < 0) {
-		jsEmailMsg.innerHTML = "Not valid email adress.";
+		jsEmailMsg.innerHTML = "Email is not valid.";
 		jsEmailMsg.style.color = "red";
 	} else {
 		jsEmailMsg.innerHTML = "Email is ok!";
@@ -79,7 +79,7 @@ regPassword.onchange = function() {
 		jsPasswordMsg.innerHTML = "Password should contain more than 7 characters.";
 		jsPasswordMsg.style.color = "red";
 	} else if (passwordValue.indexOf(" ") >= 0) {
-		jsPasswordMsg.innerHTML = "Spaces not allowed.";
+		jsPasswordMsg.innerHTML = "Spaces are not allowed.";
 		jsPasswordMsg.style.color = "red";
 	} else {
 		jsPasswordMsg.innerHTML = "Password is ok!";
@@ -94,7 +94,7 @@ regPassword2.onchange = pass;
 function pass() {
 	var password2Value = regPassword2.value;
 	var jsPassword2Msg = document.getElementById("jsPassword2Msg")
-	if (password2Value.length > 7 && password2Value == regPassword.value) {
+	if (password2Value.length > 7 && password2Value === regPassword.value) {
 		jsPassword2Msg.innerHTML = "Password match!";
 		jsPassword2Msg.style.color = "green";
 		isOkPassword2 = true;

@@ -1,9 +1,6 @@
 package by.enot.minishop.Controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.enot.minishop.Dao.DaoPurchase;
 import by.enot.minishop.Entities.Purchase;
+import by.enot.minishop.Exception.DbSaveInfoException;
+import by.enot.minishop.Exception.NotFoundInDbException;
 
 /**
  * Servlet implementation class AdminPurchaseManagerController
@@ -29,9 +28,10 @@ public class AdminPurchaseManagerController extends HttpServlet {
 			Purchase target = null;
 			try {
 				target = dao.getPurchase(id);
-			} catch (SQLException | NamingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (NotFoundInDbException e) {
+				// log coming soon
+				request.setAttribute("noSuchPurchase", "No such purchase in database");
+
 			}
 			request.setAttribute("target", "Y");
 			request.setAttribute("uppurchaseid", target.getPurchaseId());
@@ -62,17 +62,17 @@ public class AdminPurchaseManagerController extends HttpServlet {
 				dao.updatePurchase(Integer.parseInt(request.getParameter("huppurchaseid")), Integer.parseInt(request.getParameter("upclientid")),
 						request.getParameter("upphone"), request.getParameter("upadress"), request.getParameter("upproducts"));
 				request.setAttribute("updatedmessage", "Purchase successfully updated");
-			} catch (NumberFormatException | SQLException | NamingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (DbSaveInfoException e) {
+				// log coming soon
+				request.setAttribute("errPurchaseMsg", "Purchase wasn't updated. Try again.");
 			}
 		} else if (command != null && command.equals("Delete")) {
 			try {
 				dao.removePurchase(Integer.parseInt(request.getParameter("huppurchaseid")));
 				request.setAttribute("deletedmessage", "Purchase successfully deleted");
-			} catch (NumberFormatException | SQLException | NamingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (DbSaveInfoException e) {
+				// log coming soon
+				request.setAttribute("errPurchaseMsg", "Purchase wasn't deleted. Try again.");
 			}
 		}
 

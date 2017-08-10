@@ -1,12 +1,10 @@
 package by.enot.minishop.Controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.naming.NamingException;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import by.enot.minishop.Dao.DaoProduct;
 import by.enot.minishop.Dao.DaoPurchase;
 import by.enot.minishop.Entities.Product;
+import by.enot.minishop.Exception.DbSaveInfoException;
+import by.enot.minishop.Exception.NotFoundInDbException;
 
 /**
  * Servlet implementation class PurchaseController
@@ -34,7 +34,7 @@ public class PurchaseController extends HttpServlet {
 		String products = CartSaveLoad.toStringFromCartMap(cart);
 		try {
 			purchase.setPurchase(Integer.parseInt(request.getParameter("clientId")), request.getParameter("phone"), request.getParameter("adress"), new Date(), products);
-		} catch (NumberFormatException | SQLException | NamingException e) {
+		} catch (DbSaveInfoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -44,8 +44,8 @@ public class PurchaseController extends HttpServlet {
 			try {
 				Product curr = daoP.getProduct(entry.getKey());
 				daoP.updateProduct(curr.getId(), curr.getName(), curr.getPrice(), curr.getCount() - entry.getValue());
-			} catch (SQLException | NamingException e) {
-				// TODO Auto-generated catch block
+			} catch (NotFoundInDbException|DbSaveInfoException e) {
+				// log coming soon
 				e.printStackTrace();
 			}
 		}

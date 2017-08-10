@@ -1,16 +1,15 @@
 package by.enot.minishop.Controller;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.naming.NamingException;
 import javax.servlet.http.Cookie;
 
 import by.enot.minishop.Dao.DaoProduct;
+import by.enot.minishop.Exception.NotFoundInDbException;
 
 /*Cart converter. Server cart is HasMap, clint cart is string.
  * 
@@ -46,9 +45,8 @@ public class CartSaveLoad {
 			try {
 				dao.getProduct(entry.getKey());
 				result.put(entry.getKey(), entry.getValue());
-			} catch (SQLException | NamingException ignore) {
-				// TODO Auto-generated catch block
-				// need to log and ignore
+			} catch (NotFoundInDbException ignore) {
+				// log coming soon
 			}
 
 		}

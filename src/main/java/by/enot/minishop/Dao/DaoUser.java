@@ -9,9 +9,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NamingException;
-
 import by.enot.minishop.Entities.User;
+import by.enot.minishop.Exception.DbSaveInfoException;
+import by.enot.minishop.Exception.NoConnectionToDbException;
+import by.enot.minishop.Exception.NotFoundInDbException;
 
 /*Dao for manage user table in DataBase
  * 
@@ -19,7 +20,7 @@ import by.enot.minishop.Entities.User;
 
 public class DaoUser {
 	
-	public List<User> getAllUsers() throws SQLException, NamingException {
+	public List<User> getAllUsers() throws NotFoundInDbException {
 		List<User> resultList = null;
 		try (Connection currentCon = DaoDbConnector.getConnection();
 				Statement allStatement = currentCon.createStatement();
@@ -33,11 +34,14 @@ public class DaoUser {
 					System.out.println("Problem with current cortege convert in Product");
 				}
 			}
+		}catch ( SQLException | NoConnectionToDbException e) {
+			//log coming soon
+			throw new NotFoundInDbException();
 		}
 		return resultList;
 	}
 	
-	public User getUser(String name) throws SQLException, NamingException {
+	public User getUser(String name) throws NotFoundInDbException {
 		User item = null;
 		try (Connection currentCon = DaoDbConnector.getConnection();
 				PreparedStatement statement = currentCon.prepareStatement("select * from Users where UserName = ?")) {
@@ -46,11 +50,14 @@ public class DaoUser {
 				result.next();
 				item = new User(result.getInt("UserId"), result.getString("UserName"), result.getString("UserEmail"), result.getString("UserPassword"), result.getString("IsAdmin"));
 			}
+		}catch ( SQLException | NoConnectionToDbException e) {
+			//log coming soon
+			throw new NotFoundInDbException();
 		}
 		return item;
 	}
 	
-	public User getEmail(String email) throws SQLException, NamingException {
+	public User getEmail(String email) throws NotFoundInDbException {
 		User item = null;
 		try (Connection currentCon = DaoDbConnector.getConnection();
 				PreparedStatement statement = currentCon.prepareStatement("select * from Users where UserEmail = ?")) {
@@ -59,11 +66,14 @@ public class DaoUser {
 				result.next();
 				item = new User(result.getInt("UserId"), result.getString("UserName"), result.getString("UserEmail"), result.getString("UserPassword"), result.getString("IsAdmin"));
 			}
+		}catch ( SQLException | NoConnectionToDbException e) {
+			//log coming soon
+			throw new NotFoundInDbException();
 		}
 		return item;
 	}
 
-	public void setUser(String name, String email, String password, String isAdmin) throws SQLException, NamingException {
+	public void setUser(String name, String email, String password, String isAdmin) throws DbSaveInfoException{
 		try (Connection currentCon = DaoDbConnector.getConnection();
 				PreparedStatement statement = currentCon
 						.prepareStatement("insert into Users (UserName, UserEmail, UserPassword, IsAdmin) values( ?, ? , ?, ?)")) {
@@ -72,10 +82,13 @@ public class DaoUser {
 			statement.setString(3, password);
 			statement.setString(4, isAdmin);
 			statement.executeUpdate();
+		}catch ( SQLException | NoConnectionToDbException e) {
+			//log coming soon
+			throw new DbSaveInfoException();
 		}
 	}
 
-	public void updateUser(int id, String name, String email, String password, String isAdmin) throws SQLException, NamingException {
+	public void updateUser(int id, String name, String email, String password, String isAdmin) throws DbSaveInfoException {
 		try (Connection currentCon = DaoDbConnector.getConnection();
 				PreparedStatement statement = currentCon
 						.prepareStatement("update Users set UserName = ?, UserEmail = ?, UserPassword = ?, isAdmin = ? where UserId = ?")) {
@@ -85,14 +98,20 @@ public class DaoUser {
 			statement.setString(4, isAdmin);
 			statement.setInt(5, id);
 			statement.executeUpdate();
+		}catch ( SQLException | NoConnectionToDbException e) {
+			//log coming soon
+			throw new DbSaveInfoException();
 		}
 	}
 
-	public void removeUser(int id) throws SQLException, NamingException {
+	public void removeUser(int id) throws DbSaveInfoException {
 		try (Connection currentCon = DaoDbConnector.getConnection();
 				PreparedStatement statement = currentCon.prepareStatement("delete from Users where UserId = ?")) {
 			statement.setInt(1, id);
 			statement.executeUpdate();
+		}catch ( SQLException | NoConnectionToDbException e) {
+			//log coming soon
+			throw new DbSaveInfoException();
 		}
 	}
 }

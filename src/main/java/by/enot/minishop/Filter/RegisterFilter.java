@@ -1,9 +1,6 @@
 package by.enot.minishop.Filter;
 
 import java.io.IOException;
-import java.sql.SQLException;
-
-import javax.naming.NamingException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.enot.minishop.Dao.DaoUser;
 import by.enot.minishop.Entities.User;
+import by.enot.minishop.Exception.NotFoundInDbException;
 
 /**
  * Servlet Filter implementation class LoginFilter
@@ -43,28 +41,20 @@ public class RegisterFilter extends AbstractFilter {
 			request.setAttribute("email", email);
 		}
 		//check if login is in use
-		User loginUser = null;
 		try {
-			loginUser = new DaoUser().getUser(name);
-		} catch (SQLException | NamingException e) {
-			// bad exception handling. need own exception something like NOSuchUserInBaseException.
-			e.printStackTrace();
-		}
-		if (loginUser != null) {
+			User loginUser = new DaoUser().getUser(name);
 			isValidUser = false;
 			request.setAttribute("invalidLogin", "Such login is in use");
+		} catch (NotFoundInDbException ignore) {
+			// log coming soon
 		}
 		//check if email is in use
-		User emailUser = null;
 		try {
-			emailUser = new DaoUser().getUser(name);
-		} catch (SQLException | NamingException e) {
-			// bad exception handling. need own exception something like NOSuchUserInBaseException.
-			e.printStackTrace();
-		}
-		if (emailUser != null && emailUser.getEmail().equals(email)) {
+			User emailUser = new DaoUser().getEmail(email);
 			isValidUser = false;
 			request.setAttribute("invalidEmail", "Email is in use");
+		} catch (NotFoundInDbException ignore) {
+			//log coming soon
 		}
 		//check password length and equality
 		if (password.length() < 8) {

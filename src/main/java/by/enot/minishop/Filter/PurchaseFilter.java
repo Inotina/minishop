@@ -1,12 +1,10 @@
 package by.enot.minishop.Filter;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.naming.NamingException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -15,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import by.enot.minishop.Controller.CartSaveLoad;
 import by.enot.minishop.Dao.DaoProduct;
+import by.enot.minishop.Exception.NotFoundInDbException;
 
 /**
  * Servlet Filter implementation class PurchaseFilter
@@ -67,9 +66,8 @@ public class PurchaseFilter extends AbstractFilter {
 						request.setAttribute("stockmessage", "Not enough products in stock. Try again.");
 					}
 				}
-			} catch (SQLException | NamingException e) {
-				// Bad exception handling. Need own exception like NoSuchProductInDb
-				e.printStackTrace();
+			} catch (NotFoundInDbException ignore) {
+				//log coming soon
 			}
 		}
 		//make desigion

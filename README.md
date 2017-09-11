@@ -4,5 +4,3 @@ This project(Eclipse(Oxygen package) Maven webapp archetype project) is my train
 2. Purchase(will be checked and added to db)
 3. Register, Login and Logout modules.
 4. Admin Area to manage products and purchases.
-
-I'm sure the code is not so great and clean but it works :)
